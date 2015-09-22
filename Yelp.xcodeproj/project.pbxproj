@@ -17,6 +17,8 @@
 		22AAAA991AEA0A9700A544AF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA981AEA0A9700A544AF /* Business.swift */; };
 		22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */; };
 		CB0463701BB0A60F00C8F193 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04636F1BB0A60F00C8F193 /* BusinessCell.swift */; settings = {ASSET_TAGS = (); }; };
+		CB40E10E1BB20C8300FD3D0C /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB40E10D1BB20C8300FD3D0C /* SwitchCell.swift */; settings = {ASSET_TAGS = (); }; };
+		CB42E4BE1BB1FCF5002B8F4F /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		BBD540129B10DFE60E8C24E2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		C56EF0CE844A4EE5819C72AF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB04636F1BB0A60F00C8F193 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
+		CB40E10D1BB20C8300FD3D0C /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
+		CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */,
+				CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -166,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				CB04636F1BB0A60F00C8F193 /* BusinessCell.swift */,
+				CB40E10D1BB20C8300FD3D0C /* SwitchCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -319,7 +325,9 @@
 				CB0463701BB0A60F00C8F193 /* BusinessCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
+				CB40E10E1BB20C8300FD3D0C /* SwitchCell.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
+				CB42E4BE1BB1FCF5002B8F4F /* FiltersViewController.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
