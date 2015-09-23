@@ -26,7 +26,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, radius: 1609.34) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             
@@ -65,8 +65,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         currentFilters = filters
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as! Bool
+        let distance = filters["distance"] as? Double
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             

@@ -26,6 +26,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var filterCategoryStates = [Int: Bool]()
     var dealsState: Bool = false
+    var distanceCheckboxCell: CheckboxCell?
     var initialFilters: [String:AnyObject]?
     
     override func viewDidLoad() {
@@ -48,6 +49,20 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let initialDealsState = initialFilters?["deals"] {
             dealsState =  initialDealsState as! Bool
         }
+//        if let initialDistance = initialFilters?["distance"] {
+//            let metersDistance = initialDistance as! Double // in meters
+//            let milesDistance = metersDistance/1609.34      // in miles
+//            var row = 0
+//            for (index, value) in distances.enumerate() {
+//                if milesDistance == value {
+//                    row = index
+//                }
+//            }
+//            
+//            let indexPath = NSIndexPath(forRow: row, inSection: FilterTypes.Distance.rawValue)
+            // this isn't working yet
+//            distanceCheckboxCell = filtersTableView.cellForRowAtIndexPath(indexPath) as? CheckboxCell
+//        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -65,15 +80,38 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.onSwitch.on = filterCategoryStates[indexPath.row] ?? false
             }
             return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("CheckboxCell", forIndexPath: indexPath) as! CheckboxCell
+            if indexPath.section == FilterTypes.Distance.rawValue {
+                let distance = distances[indexPath.row]
+                cell.checkboxLabel.text = "\(distance) miles"
+                cell.value = distance
+            } else {
+                cell.checkboxLabel.text = "TEST"
+            }
+
+            return cell
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
-        return cell
+        if indexPath.section == FilterTypes.Distance.rawValue {
+            let cell = filtersTableView.cellForRowAtIndexPath(indexPath) as! CheckboxCell
+            cell.toggleValue()
+            if distanceCheckboxCell != nil {
+                distanceCheckboxCell?.toggleValue()
+            }
+            distanceCheckboxCell = cell
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 3 {
+        if section == FilterTypes.Category.rawValue {
             return categories.count
+        } else if section == FilterTypes.Distance.rawValue {
+            return distances.count
         } else {
             return 1
         }
@@ -121,9 +159,15 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         
+        if let distanceCheckboxCell = distanceCheckboxCell {
+            let distance = distanceCheckboxCell.value // in miles
+            filters["distance"] = distance! * 1609.34 // in meters
+        }
+        
         if selectedCategories.count > 0 {
             filters["categories"] = selectedCategories
         }
+
         filters["deals"] = dealsState
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
     }
@@ -137,6 +181,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         // Pass the selected object to the new view controller.
     }
     */
+    
+    let distances:[Double] = [10.0, 5.0, 2.0, 1.0, 0.75, 0.5, 0.2, 0.1]
     
     let categories = [["name" : "Afghan", "code": "afghani"],
         ["name" : "African", "code": "african"],

@@ -191,6 +191,39 @@
                                             <outlet property="switchLabel" destination="LHx-5R-44D" id="axF-BV-evx"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CheckboxCell" rowHeight="91" id="ZMk-B1-W2u" customClass="CheckboxCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="181" width="600" height="91"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZMk-B1-W2u" id="gBL-qa-tmr">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="90"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ir8-EM-xiQ">
+                                                    <rect key="frame" x="8" y="33" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="53A-Kx-pH6">
+                                                    <rect key="frame" x="542" y="19" width="50" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="4jL-d2-A5y"/>
+                                                        <constraint firstAttribute="height" constant="40" id="Y9P-cX-QAU"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="53A-Kx-pH6" firstAttribute="centerY" secondItem="gBL-qa-tmr" secondAttribute="centerY" id="Cnb-Fq-MCV"/>
+                                                <constraint firstItem="Ir8-EM-xiQ" firstAttribute="leading" secondItem="gBL-qa-tmr" secondAttribute="leading" constant="8" id="Ru9-mH-6el"/>
+                                                <constraint firstItem="53A-Kx-pH6" firstAttribute="centerY" secondItem="Ir8-EM-xiQ" secondAttribute="centerY" id="fLU-pu-LGa"/>
+                                                <constraint firstAttribute="trailing" secondItem="53A-Kx-pH6" secondAttribute="trailing" constant="8" id="uGR-Nn-CjU"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="checkboxImage" destination="53A-Kx-pH6" id="cp6-IB-CLG"/>
+                                            <outlet property="checkboxLabel" destination="Ir8-EM-xiQ" id="hqp-Hn-Gxn"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
