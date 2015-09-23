@@ -26,13 +26,28 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var filterCategoryStates = [Int: Bool]()
     var dealsState: Bool = false
+    var initialFilters: [String:AnyObject]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         filtersTableView.delegate = self
         filtersTableView.dataSource = self
         filtersTableView.separatorColor = UIColor.clearColor()
-
+        
+        // set initial categories - could be better than n^2
+        if let initialCategories = initialFilters?["categories"] {
+            let initialStringCategories = initialCategories as! [String]
+            for initCategory in initialStringCategories {
+                for (index, category) in categories.enumerate() {
+                    if category["code"] == initCategory {
+                        filterCategoryStates[index] = true
+                    }
+                }
+            }
+        }
+        if let initialDealsState = initialFilters?["deals"] {
+            dealsState =  initialDealsState as! Bool
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

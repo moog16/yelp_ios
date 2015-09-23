@@ -11,6 +11,8 @@ import UIKit
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate     {
 
     var businesses: [Business]!
+    var currentFilters: [String: AnyObject]?
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -55,9 +57,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let navigationController = segue.destinationViewController as! UINavigationController
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         filtersViewController.delegate = self
+        
+        filtersViewController.initialFilters = currentFilters
     }
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+        currentFilters = filters
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as! Bool
         
