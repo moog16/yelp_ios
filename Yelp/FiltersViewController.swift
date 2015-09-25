@@ -40,6 +40,9 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         filtersTableView.delegate = self
         filtersTableView.dataSource = self
         filtersTableView.separatorColor = UIColor.clearColor()
+        filtersTableView.rowHeight = UITableViewAutomaticDimension
+        filtersTableView.estimatedRowHeight = 90
+        filtersTableView.layer.borderColor = UIColor.blackColor().CGColor
         
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.749, green: 0.0902, blue: 0, alpha: 1.0)
         
@@ -85,6 +88,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             cell.checkOff()
         }
+
         return cell
     }
     
@@ -101,6 +105,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             cell.checkOff()
         }
+
         
         return cell
     }
@@ -123,6 +128,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.switchLabel.text = categories[indexPath.row]["name"]
                     cell.onSwitch.on = filterCategoryStates[indexPath.row] ?? false
                 }
+
                 return cell
             }
         } else {
@@ -132,6 +138,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                 } else {
                     let cell = tableView.dequeueReusableCellWithIdentifier("DropDownCell", forIndexPath: indexPath) as! DropDownCell
                     cell.dropDownLabel.text = "\(distanceState) miles"
+
                     return cell
                 }
             } else {
@@ -144,6 +151,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                     } else {
                         cell.dropDownLabel.text = "Sort"
                     }
+
                     return cell
                 }
             }

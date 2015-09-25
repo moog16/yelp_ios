@@ -10,6 +10,7 @@ import UIKit
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var filtersBarButton: UIBarButtonItem!
     var businesses: [Business]!
     var currentFilters: [String: AnyObject]?
     var defaultCurrentFilters = [String: AnyObject]()
@@ -27,6 +28,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.estimatedRowHeight = 120
         
         navigationController?.navigationBar.barTintColor = UIColor(red: 0.749, green: 0.0902, blue: 0, alpha: 1.0)
+        
         let navigationSearchBar = UISearchBar()
         navigationSearchBar.sizeToFit()
         navigationItem.titleView = navigationSearchBar
@@ -113,6 +115,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
+        }
+        if businesses.count > 0 {
+            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
     }
     
