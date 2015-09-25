@@ -32,6 +32,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     var initialFilters: [String:AnyObject]?
     
     var showAllDistances: Bool = false
+    var showAllSorts: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +68,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    func distanceCell(indexPath: NSIndexPath, cell: CheckboxCell) -> CheckboxCell {
+    func distanceCell(indexPath: NSIndexPath, tableView: UITableView) -> CheckboxCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("CheckboxCell", forIndexPath: indexPath) as! CheckboxCell
         let distance = distances[indexPath.row]
         cell.value = distance
         cell.checkboxLabel.text = "\(distance) miles"
@@ -83,7 +85,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    func sortCell(indexPath: NSIndexPath, cell: CheckboxCell) -> CheckboxCell {
+    func sortCell(indexPath: NSIndexPath, tableView: UITableView) -> CheckboxCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("CheckboxCell", forIndexPath: indexPath) as! CheckboxCell
         cell.value = indexPath.row
         cell.checkboxLabel.text = YelpSortMode(rawValue: indexPath.row)!.label
         if sortState != nil {
@@ -115,12 +118,26 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("CheckboxCell", forIndexPath: indexPath) as! CheckboxCell
-
             if indexPath.section == FilterTypes.Distance.rawValue {
-                return distanceCell(indexPath, cell: cell)
+                if showAllDistances {
+                    return distanceCell(indexPath, tableView: tableView)
+                } else {
+                    let cell = tableView.dequeueReusableCellWithIdentifier("DropDownCell", forIndexPath: indexPath) as! DropDownCell
+                    cell.dropDownLabel.text = "\(distanceState) miles"
+                    return cell
+                }
             } else {
-                return sortCell(indexPath, cell:cell)
+                if showAllSorts {
+                    return sortCell(indexPath, tableView: tableView)
+                } else {
+                    let cell = tableView.dequeueReusableCellWithIdentifier("DropDownCell", forIndexPath: indexPath) as! DropDownCell
+                    if let sortState = sortState {
+                        cell.dropDownLabel.text = "\(YelpSortMode(rawValue: sortState)!.label)"
+                    } else {
+                        cell.dropDownLabel.text = "Sort"
+                    }
+                    return cell
+                }
             }
         }
     }
@@ -142,31 +159,60 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         return nil
     }
     
+    func animateDistanceSection() {
+        let index = NSIndexSet(index: FilterTypes.Distance.rawValue)
+        filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func animateSortSection() {
+        let index = NSIndexSet(index: FilterTypes.Sort.rawValue)
+        filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func animateTableViewSection(index: FilterTypes) {
+        let index = NSIndexSet(index: index.rawValue)
+        filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let isDistanceSection = indexPath.section == FilterTypes.Distance.rawValue
+        let isSortSection = indexPath.section == FilterTypes.Sort.rawValue
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let cell = filtersTableView.cellForRowAtIndexPath(indexPath) as! CheckboxCell
-        if cell.isSelected == true {
-            cell.checkOff()
-        } else {
-            cell.checkOn()
-            if indexPath.section == FilterTypes.Distance.rawValue {
-                if distanceState != nil {
-                    if let distanceCell = getDistanceCell(distanceState!) {
-                        if distanceCell != cell {
-                            distanceCell.checkOff()
+        if showAllDistances == false && isDistanceSection {
+            showAllDistances = true
+            animateTableViewSection(FilterTypes.Distance)
+        } else if showAllSorts == false && isSortSection {
+            showAllSorts = true
+            animateTableViewSection(FilterTypes.Sort)
+        } else if isDistanceSection || isSortSection {
+            let cell = filtersTableView.cellForRowAtIndexPath(indexPath) as! CheckboxCell
+            if cell.isSelected == true {
+                cell.checkOff()
+            } else {
+                cell.checkOn()
+                if isDistanceSection {
+                    if distanceState != nil {
+                        if let distanceCell = getDistanceCell(distanceState!) {
+                            if distanceCell != cell {
+                                distanceCell.checkOff()
+                            }
                         }
                     }
-                }
-                distanceState = cell.value as? Double
-            } else if indexPath.section == FilterTypes.Sort.rawValue {
-                if sortState != nil {
-                    if let sortCell = getSortCell(sortState!) {
-                        if sortCell != cell {
-                            sortCell.checkOff()
+                    distanceState = cell.value as? Double
+                    showAllDistances = false
+                    animateTableViewSection(FilterTypes.Distance)
+                } else if isSortSection {
+                    if sortState != nil {
+                        if let sortCell = getSortCell(sortState!) {
+                            if sortCell != cell {
+                                sortCell.checkOff()
+                            }
                         }
                     }
+                    sortState = cell.value as? Int
+                    showAllSorts = false
+                    animateTableViewSection(FilterTypes.Sort)
                 }
-                sortState = cell.value as? Int
             }
         }
     }
@@ -175,9 +221,9 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         if section == FilterTypes.Category.rawValue {
             return categories.count
         } else if section == FilterTypes.Distance.rawValue {
-            return showAllDistances == true ? distances.count : distances.count
+            return showAllDistances == true ? distances.count : 1
         } else if section == FilterTypes.Sort.rawValue {
-            return YelpSortMode.count
+            return showAllSorts ==  true ? YelpSortMode.count : 1
         } else {
             return 1
         }
