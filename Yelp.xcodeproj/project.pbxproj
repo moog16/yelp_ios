@@ -22,6 +22,7 @@
 		CB42E4BE1BB1FCF5002B8F4F /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CB4F58461BB4CF720029E73A /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F58451BB4CF720029E73A /* DropDownCell.swift */; settings = {ASSET_TAGS = (); }; };
 		CBEA1C731BB5D84C00BDE0B3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEA1C721BB5D84C00BDE0B3 /* MapKit.framework */; };
+		CBEA1C751BB5DA3900BDE0B3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEA1C741BB5DA3900BDE0B3 /* MapViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		CB4F58451BB4CF720029E73A /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
 		CBEA1C721BB5D84C00BDE0B3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CBEA1C741BB5DA3900BDE0B3 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 			children = (
 				22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */,
 				CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */,
+				CBEA1C741BB5DA3900BDE0B3 /* MapViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				CB0463701BB0A60F00C8F193 /* BusinessCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
+				CBEA1C751BB5DA3900BDE0B3 /* MapViewController.swift in Sources */,
 				CB40E10E1BB20C8300FD3D0C /* SwitchCell.swift in Sources */,
 				CB4F58461BB4CF720029E73A /* DropDownCell.swift in Sources */,
 				CB40E1141BB3555D00FD3D0C /* CheckboxCell.swift in Sources */,

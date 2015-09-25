@@ -192,6 +192,11 @@
                                 </segue>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="dU0-Oj-Dk2">
+                            <connections>
+                                <segue destination="WMc-j8-9S2" kind="show" id="AZe-sE-NYf"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="filtersBarButton" destination="30s-QH-GL7" id="QZv-Kw-8J9"/>
@@ -203,23 +208,37 @@
             </objects>
             <point key="canvasLocation" x="2653" y="357"/>
         </scene>
-        <!--View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="MQn-NP-VpH">
             <objects>
-                <viewController id="WMc-j8-9S2" sceneMemberID="viewController">
+                <viewController id="WMc-j8-9S2" customClass="MapViewController" customModule="Yelp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dNO-F4-zep"/>
                         <viewControllerLayoutGuide type="bottom" id="KPm-gH-Z80"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zeh-5l-ANQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Hdb-Mz-bWw">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                            </mapView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Hdb-Mz-bWw" firstAttribute="top" secondItem="zeh-5l-ANQ" secondAttribute="top" id="Hke-s8-cjx"/>
+                            <constraint firstItem="KPm-gH-Z80" firstAttribute="top" secondItem="Hdb-Mz-bWw" secondAttribute="bottom" id="URT-qE-UId"/>
+                            <constraint firstItem="Hdb-Mz-bWw" firstAttribute="leading" secondItem="zeh-5l-ANQ" secondAttribute="leading" id="WKS-al-eyO"/>
+                            <constraint firstAttribute="trailing" secondItem="Hdb-Mz-bWw" secondAttribute="trailing" id="rIc-eb-7N6"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="Hdb-Mz-bWw" id="sJ6-bG-N6J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T3r-Of-VtH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3140" y="1062"/>
+            <point key="canvasLocation" x="2653" y="1194"/>
         </scene>
         <!--Filters-->
         <scene sceneID="If3-Uk-QW1">

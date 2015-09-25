@@ -91,11 +91,19 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let navigationController = segue.destinationViewController as! UINavigationController
-        let filtersViewController = navigationController.topViewController as! FiltersViewController
-        filtersViewController.delegate = self
-        
-        filtersViewController.initialFilters = currentFilters != nil ? currentFilters : defaultCurrentFilters
+        let nextViewController = segue.destinationViewController
+        if nextViewController is UINavigationController {
+            let navigationController = nextViewController as! UINavigationController
+            let filtersViewController = navigationController.topViewController as! FiltersViewController
+            filtersViewController.delegate = self
+            
+            filtersViewController.initialFilters = currentFilters != nil ? currentFilters : defaultCurrentFilters
+        } else {
+            if businesses != nil {
+                let mapViewController = nextViewController as! MapViewController
+                mapViewController.businesses = self.businesses
+            }
+        }
     }
     
     func search(filters: [String: AnyObject]) {
