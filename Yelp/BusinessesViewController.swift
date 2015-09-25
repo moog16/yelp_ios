@@ -26,6 +26,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.749, green: 0.0902, blue: 0, alpha: 1.0)
         let navigationSearchBar = UISearchBar()
         navigationSearchBar.sizeToFit()
         navigationItem.titleView = navigationSearchBar

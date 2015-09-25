@@ -41,6 +41,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         filtersTableView.dataSource = self
         filtersTableView.separatorColor = UIColor.clearColor()
         
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.749, green: 0.0902, blue: 0, alpha: 1.0)
+        
         if let initialFilters = initialFilters {
             // set initial categories - could be better than n^2
             if let initialCategories = initialFilters["categories"] {
