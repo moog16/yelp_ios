@@ -33,6 +33,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var showAllDistances: Bool = false
     var showAllSorts: Bool = false
+    var showAllCategories: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,18 +106,23 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == FilterTypes.Deals.rawValue ||
             indexPath.section == FilterTypes.Category.rawValue {
-         
-            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
-            cell.delegate = self
-                
-            if indexPath.section == FilterTypes.Deals.rawValue {
-                cell.switchLabel.text = "Offering a Deal"
-                cell.onSwitch.on = dealsState
+            if !showAllCategories && indexPath.row == 3 && indexPath.section == FilterTypes.Category.rawValue {
+                let cell = tableView.dequeueReusableCellWithIdentifier("SeeAllCell", forIndexPath: indexPath)
+                return cell
             } else {
-                cell.switchLabel.text = categories[indexPath.row]["name"]
-                cell.onSwitch.on = filterCategoryStates[indexPath.row] ?? false
+                let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! SwitchCell
+                cell.delegate = self
+
+                    
+                if indexPath.section == FilterTypes.Deals.rawValue {
+                    cell.switchLabel.text = "Offering a Deal"
+                    cell.onSwitch.on = dealsState
+                } else {
+                    cell.switchLabel.text = categories[indexPath.row]["name"]
+                    cell.onSwitch.on = filterCategoryStates[indexPath.row] ?? false
+                }
+                return cell
             }
-            return cell
         } else {
             if indexPath.section == FilterTypes.Distance.rawValue {
                 if showAllDistances {
@@ -159,16 +165,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         return nil
     }
     
-    func animateDistanceSection() {
-        let index = NSIndexSet(index: FilterTypes.Distance.rawValue)
-        filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
-    }
-    
-    func animateSortSection() {
-        let index = NSIndexSet(index: FilterTypes.Sort.rawValue)
-        filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
-    }
-    
     func animateTableViewSection(index: FilterTypes) {
         let index = NSIndexSet(index: index.rawValue)
         filtersTableView.reloadSections(index, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -177,8 +173,13 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let isDistanceSection = indexPath.section == FilterTypes.Distance.rawValue
         let isSortSection = indexPath.section == FilterTypes.Sort.rawValue
+        let isCategorySection = indexPath.section == FilterTypes.Category.rawValue
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        if showAllDistances == false && isDistanceSection {
+        
+        if isCategorySection && indexPath.row == 3 && !showAllCategories {
+            showAllCategories = true
+            animateTableViewSection(FilterTypes.Category)
+        } else if showAllDistances == false && isDistanceSection {
             showAllDistances = true
             animateTableViewSection(FilterTypes.Distance)
         } else if showAllSorts == false && isSortSection {
@@ -219,7 +220,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == FilterTypes.Category.rawValue {
-            return categories.count
+            return showAllCategories == true ? categories.count : 4
         } else if section == FilterTypes.Distance.rawValue {
             return showAllDistances == true ? distances.count : 1
         } else if section == FilterTypes.Sort.rawValue {
@@ -286,16 +287,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         filters["deals"] = dealsState
         delegate?.filtersViewController?(self, didUpdateFilters: filters)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     let distances:[Double] = [10.0, 5.0, 2.0, 1.0, 0.75, 0.5, 0.2, 0.1]
     
