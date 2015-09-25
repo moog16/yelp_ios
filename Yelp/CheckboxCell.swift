@@ -15,7 +15,7 @@ class CheckboxCell: UITableViewCell {
     var isSelected: Bool! = false
     let outline: UIImage = UIImage(named: "outline")!
     let checkbox: UIImage = UIImage(named: "checkbox")!
-    var value: Double?
+    var value: AnyObject?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,12 +28,12 @@ class CheckboxCell: UITableViewCell {
     
     func checkOff() {
         isSelected = false
-        checkboxImage.image = outline
+        checkboxImage.image = UIImage(named: "outline")!
     }
     
-    func toggleValue() {
-        isSelected = !isSelected
-        checkboxImage.image = isSelected == true ? checkbox : outline
+    func checkOn() {
+        isSelected = true
+        checkboxImage.image = UIImage(named: "checkbox")!
     }
 
 }

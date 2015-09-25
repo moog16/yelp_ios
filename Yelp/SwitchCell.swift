@@ -11,7 +11,7 @@ import UIKit
 @objc protocol SwitchCellDelegate {
     optional func switchCell(switchCell: SwitchCell, didChangeValue value: Bool)
 }
-
+//UITableViewCellAccessoryCheckmark
 class SwitchCell: UITableViewCell {
     weak var delegate: SwitchCellDelegate?
     @IBOutlet weak var switchLabel: UILabel!

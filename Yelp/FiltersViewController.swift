@@ -26,7 +26,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var filterCategoryStates = [Int: Bool]()
     var dealsState: Bool = false
-    var distanceCheckboxCell: CheckboxCell?
+    var distanceState: Double?
+    var sortState: Int?
     var initialFilters: [String:AnyObject]?
     
     override func viewDidLoad() {
@@ -46,23 +47,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
         }
-        if let initialDealsState = initialFilters?["deals"] {
-            dealsState =  initialDealsState as! Bool
-        }
-//        if let initialDistance = initialFilters?["distance"] {
-//            let metersDistance = initialDistance as! Double // in meters
-//            let milesDistance = metersDistance/1609.34      // in miles
-//            var row = 0
-//            for (index, value) in distances.enumerate() {
-//                if milesDistance == value {
-//                    row = index
-//                }
-//            }
-//            
-//            let indexPath = NSIndexPath(forRow: row, inSection: FilterTypes.Distance.rawValue)
-            // this isn't working yet
-//            distanceCheckboxCell = filtersTableView.cellForRowAtIndexPath(indexPath) as? CheckboxCell
-//        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -82,28 +66,75 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("CheckboxCell", forIndexPath: indexPath) as! CheckboxCell
+
             if indexPath.section == FilterTypes.Distance.rawValue {
                 let distance = distances[indexPath.row]
-                cell.checkboxLabel.text = "\(distance) miles"
                 cell.value = distance
+                cell.checkboxLabel.text = "\(distance) miles"
+                if distanceState != nil {
+                    if distanceState! == cell.value as! Double {
+                        cell.checkOn()
+                    } else {
+                        cell.checkOff()
+                    }
+                } else {
+                    cell.checkOff()
+                }
             } else {
-                cell.checkboxLabel.text = "TEST"
+                cell.value = indexPath.row
+                cell.checkboxLabel.text = YelpSortMode(rawValue: indexPath.row)!.label
+                if sortState != nil {
+                    if sortState! == cell.value as! Int {
+                        cell.checkOn()
+                    } else {
+                        cell.checkOff()
+                    }
+                } else {
+                    cell.checkOff()
+                }
             }
 
             return cell
         }
     }
     
+    func getDistanceCell(value: Double) -> CheckboxCell? {
+        let row = distances.indexOf(value)
+        if let row = row {
+            let indexPath = NSIndexPath(forRow: row, inSection: FilterTypes.Distance.rawValue)
+            return filtersTableView.cellForRowAtIndexPath(indexPath) as? CheckboxCell
+        }
+        return nil
+    }
+    
+    func getSortCell(value: Int) -> CheckboxCell? {
+        let indexPath = NSIndexPath(forRow: value, inSection: FilterTypes.Sort.rawValue)
+        if let cell = filtersTableView.cellForRowAtIndexPath(indexPath) {
+            return cell as? CheckboxCell
+        }
+        return nil
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
         if indexPath.section == FilterTypes.Distance.rawValue {
             let cell = filtersTableView.cellForRowAtIndexPath(indexPath) as! CheckboxCell
-            cell.toggleValue()
-            if distanceCheckboxCell != nil {
-                distanceCheckboxCell?.toggleValue()
+            cell.checkOn()
+            if distanceState != nil {
+                if let distanceCell = getDistanceCell(distanceState!) {
+                    distanceCell.checkOff()
+                }
             }
-            distanceCheckboxCell = cell
+            distanceState = cell.value as? Double
+        } else if indexPath.section == FilterTypes.Sort.rawValue {
+            let cell = filtersTableView.cellForRowAtIndexPath(indexPath) as! CheckboxCell
+            cell.checkOn()
+            if sortState != nil {
+                if let sortCell = getSortCell(sortState!) {
+                    sortCell.checkOff()
+                }
+            }
+            sortState = cell.value as? Int
         }
     }
     
@@ -112,6 +143,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             return categories.count
         } else if section == FilterTypes.Distance.rawValue {
             return distances.count
+        } else if section == FilterTypes.Sort.rawValue {
+            return YelpSortMode.count
         } else {
             return 1
         }
@@ -159,13 +192,16 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         
-        if let distanceCheckboxCell = distanceCheckboxCell {
-            let distance = distanceCheckboxCell.value // in miles
-            filters["distance"] = distance! * 1609.34 // in meters
+        if let distanceState = distanceState {
+            filters["distance"] = distanceState * 1609.34 // in meters
         }
         
         if selectedCategories.count > 0 {
             filters["categories"] = selectedCategories
+        }
+        
+        if sortState != nil {
+            filters["sort"] = sortState
         }
 
         filters["deals"] = dealsState

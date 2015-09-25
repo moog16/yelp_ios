@@ -58,7 +58,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         filtersViewController.delegate = self
         
-        filtersViewController.initialFilters = currentFilters
+//        filtersViewController.initialFilters = currentFilters
     }
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
@@ -66,15 +66,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as! Bool
         let distance = filters["distance"] as? Double
+        let sort = filters["sort"] as? Int
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: YelpSortMode(rawValue: sort!), categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
         }
     }
 

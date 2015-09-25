@@ -16,6 +16,21 @@ let yelpTokenSecret = "yJ1bUDhVcKInTT5UjQE01mR3G8c"
 
 enum YelpSortMode: Int {
     case BestMatched = 0, Distance, HighestRated
+    
+    static var count: Int { return YelpSortMode.HighestRated.hashValue + 1}
+    
+    var label: String {
+        get {
+            switch self.rawValue {
+            case 0:
+                return "Best Matched"
+            case 1:
+                return "Distance"
+            default:
+                return "Highest Rated"
+            }
+        }
+    }
 }
 
 class YelpClient: BDBOAuth1RequestOperationManager {
