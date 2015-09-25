@@ -12,6 +12,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
     var businesses: [Business]!
     var currentFilters: [String: AnyObject]?
+    var defaultCurrentFilters = [String: AnyObject]()
+    let metersPerMile = 1609.34
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -25,8 +27,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let searchBar = UISearchBar()
         searchBar.sizeToFit()
         navigationItem.titleView = searchBar
+        defaultCurrentFilters["categories"] = ["burgers"]
+        defaultCurrentFilters["deals"] = true as Bool
+        defaultCurrentFilters["distance"] = metersPerMile
+        defaultCurrentFilters["sort"] = 1
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true, radius: 1609.34) { (businesses: [Business]!, error: NSError!) -> Void in
+        
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["burgers"], deals: true, radius: metersPerMile) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             
@@ -58,7 +65,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         let filtersViewController = navigationController.topViewController as! FiltersViewController
         filtersViewController.delegate = self
         
-//        filtersViewController.initialFilters = currentFilters
+        filtersViewController.initialFilters = currentFilters != nil ? currentFilters : defaultCurrentFilters
     }
     
     func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {

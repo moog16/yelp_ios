@@ -23,6 +23,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @IBOutlet weak var filtersTableView: UITableView!
     weak var delegate: FiltersViewControllerDelegate?
+    let metersPerMile = 1609.34
     
     var filterCategoryStates = [Int: Bool]()
     var dealsState: Bool = false
@@ -38,17 +39,32 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         filtersTableView.dataSource = self
         filtersTableView.separatorColor = UIColor.clearColor()
         
-        // set initial categories - could be better than n^2
-        if let initialCategories = initialFilters?["categories"] {
-            let initialStringCategories = initialCategories as! [String]
-            for initCategory in initialStringCategories {
-                for (index, category) in categories.enumerate() {
-                    if category["code"] == initCategory {
-                        filterCategoryStates[index] = true
+        if let initialFilters = initialFilters {
+            // set initial categories - could be better than n^2
+            if let initialCategories = initialFilters["categories"] {
+                let initialStringCategories = initialCategories as! [String]
+                for initCategory in initialStringCategories {
+                    for (index, category) in categories.enumerate() {
+                        if category["code"] == initCategory {
+                            filterCategoryStates[index] = true
+                        }
                     }
                 }
             }
+            
+            if let initialDeals = initialFilters["deals"] {
+                dealsState = initialDeals as! Bool
+            }
+            
+            if let initialSort = initialFilters["sort"] {
+                sortState = initialSort as? Int
+            }
+            
+            if let initialDistance = initialFilters["distance"] {
+                distanceState = (initialDistance as! Double)/metersPerMile
+            }
         }
+        
     }
     
     func distanceCell(indexPath: NSIndexPath, cell: CheckboxCell) -> CheckboxCell {
@@ -64,6 +80,22 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             cell.checkOff()
         }
+        return cell
+    }
+    
+    func sortCell(indexPath: NSIndexPath, cell: CheckboxCell) -> CheckboxCell {
+        cell.value = indexPath.row
+        cell.checkboxLabel.text = YelpSortMode(rawValue: indexPath.row)!.label
+        if sortState != nil {
+            if sortState! == cell.value as! Int {
+                cell.checkOn()
+            } else {
+                cell.checkOff()
+            }
+        } else {
+            cell.checkOff()
+        }
+        
         return cell
     }
     
@@ -88,19 +120,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             if indexPath.section == FilterTypes.Distance.rawValue {
                 return distanceCell(indexPath, cell: cell)
             } else {
-                cell.value = indexPath.row
-                cell.checkboxLabel.text = YelpSortMode(rawValue: indexPath.row)!.label
-                if sortState != nil {
-                    if sortState! == cell.value as! Int {
-                        cell.checkOn()
-                    } else {
-                        cell.checkOff()
-                    }
-                } else {
-                    cell.checkOff()
-                }
-                
-                return cell
+                return sortCell(indexPath, cell:cell)
             }
         }
     }
@@ -141,7 +161,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else if indexPath.section == FilterTypes.Sort.rawValue {
                 if sortState != nil {
                     if let sortCell = getSortCell(sortState!) {
-                        if distanceCell != cell {
+                        if sortCell != cell {
                             sortCell.checkOff()
                         }
                     }
@@ -206,7 +226,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         if let distanceState = distanceState {
-            filters["distance"] = distanceState * 1609.34 // in meters
+            filters["distance"] = distanceState * metersPerMile // in meters
         }
         
         if selectedCategories.count > 0 {

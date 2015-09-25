@@ -158,7 +158,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="89" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-4o-gSR">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="89" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-4o-gSR" customClass="Dro">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -222,6 +222,46 @@
                                         <connections>
                                             <outlet property="checkboxImage" destination="53A-Kx-pH6" id="cp6-IB-CLG"/>
                                             <outlet property="checkboxLabel" destination="Ir8-EM-xiQ" id="hqp-Hn-Gxn"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DropDownCell" id="nen-ru-hzi" customClass="DropDownCell" customModule="Yelp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="272" width="600" height="89"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nen-ru-hzi" id="rpG-7n-KFe">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="89"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVG-4x-5GN">
+                                                    <rect key="frame" x="8" y="35" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="chevronDown" translatesAutoresizingMaskIntoConstraints="NO" id="QH0-2F-yrN">
+                                                    <rect key="frame" x="542" y="35" width="50" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="40" id="AKi-DG-HKh"/>
+                                                        <constraint firstAttribute="height" constant="22" id="V4A-uc-1wi"/>
+                                                        <constraint firstAttribute="width" constant="50" id="VzT-d2-3is"/>
+                                                        <constraint firstAttribute="height" constant="40" id="dzJ-9u-IaR"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="AKi-DG-HKh"/>
+                                                            <exclude reference="dzJ-9u-IaR"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="QH0-2F-yrN" secondAttribute="trailing" constant="8" id="bdb-18-ekj"/>
+                                                <constraint firstItem="QH0-2F-yrN" firstAttribute="centerY" secondItem="rpG-7n-KFe" secondAttribute="centerY" id="dZ9-Se-CFP"/>
+                                                <constraint firstItem="QH0-2F-yrN" firstAttribute="centerY" secondItem="XVG-4x-5GN" secondAttribute="centerY" id="lCe-IW-gve"/>
+                                                <constraint firstItem="XVG-4x-5GN" firstAttribute="leading" secondItem="rpG-7n-KFe" secondAttribute="leading" constant="8" id="oWW-gA-gDh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dropDownLabel" destination="XVG-4x-5GN" id="lNc-gf-8ZO"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -292,4 +332,7 @@
             <point key="canvasLocation" x="3589" y="357"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="chevronDown" width="318" height="136"/>
+    </resources>
 </document>
