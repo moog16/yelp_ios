@@ -14,6 +14,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     var currentFilters: [String: AnyObject]?
     var defaultCurrentFilters = [String: AnyObject]()
     let metersPerMile = 1609.34
+    @IBOutlet weak var noResultsFoundView: UIView!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -36,11 +37,19 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["burgers"], deals: true, radius: metersPerMile) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
+            self.showError(businesses)
             
             for business in businesses {
                 print(business.name!)
                 print(business.address!)
             }
+        }
+    }
+    
+    func showError(businesses: [Business]) {
+        noResultsFoundView.hidden = true
+        if businesses.count == 0 {
+            noResultsFoundView.hidden = false
         }
     }
     
@@ -85,6 +94,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         Business.searchWithTerm("Restaurants", sort: sortOrder, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
+            self.showError(businesses)
         }
     }
 
