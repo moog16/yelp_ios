@@ -8,12 +8,13 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate     {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
     var businesses: [Business]!
     var currentFilters: [String: AnyObject]?
     var defaultCurrentFilters = [String: AnyObject]()
     let metersPerMile = 1609.34
+    var searchBar: UISearchBar?
     @IBOutlet weak var noResultsFoundView: UIView!
     
     @IBOutlet weak var tableView: UITableView!
@@ -25,24 +26,23 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 120
         
-        let searchBar = UISearchBar()
-        searchBar.sizeToFit()
-        navigationItem.titleView = searchBar
-        defaultCurrentFilters["categories"] = ["burgers"]
-        defaultCurrentFilters["deals"] = true as Bool
+        let navigationSearchBar = UISearchBar()
+        navigationSearchBar.sizeToFit()
+        navigationItem.titleView = navigationSearchBar
+        searchBar = navigationSearchBar
+        navigationSearchBar.delegate = self
+        
+        
+        defaultCurrentFilters["categories"] = []
+        defaultCurrentFilters["deals"] = false as Bool
         defaultCurrentFilters["distance"] = metersPerMile
         defaultCurrentFilters["sort"] = 1
         
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["burgers"], deals: true, radius: metersPerMile) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: metersPerMile) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
-            
-            for business in businesses {
-                print(business.name!)
-                print(business.address!)
-            }
         }
     }
     
@@ -53,8 +53,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        searchBar?.resignFirstResponder()
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        searchBar?.endEditing(true)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +76,15 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         
         return cell
     }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if let currentFilters = currentFilters {
+            search(currentFilters)
+        } else {
+            search(defaultCurrentFilters)
+        }
+        searchBar.endEditing(true)
+    }
 
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -81,8 +95,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         filtersViewController.initialFilters = currentFilters != nil ? currentFilters : defaultCurrentFilters
     }
     
-    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-        currentFilters = filters
+    func search(filters: [String: AnyObject]) {
         let categories = filters["categories"] as? [String]
         let deals = filters["deals"] as! Bool
         let distance = filters["distance"] as? Double
@@ -90,12 +103,21 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         if let sort = filters["sort"] as? Int {
             sortOrder =  YelpSortMode(rawValue: sort)!
         }
+        var searchTerm = "Restaurants"
+        if let searchText = searchBar!.text {
+            searchTerm = searchText
+        }
         
-        Business.searchWithTerm("Restaurants", sort: sortOrder, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm(searchTerm, sort: sortOrder, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
         }
+    }
+    
+    func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
+        currentFilters = filters
+        search(filters)
     }
 
 }
