@@ -7,7 +7,6 @@
 //
 
 import UIKit
-//import MBProgressHUD
 import CoreLocation
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
@@ -60,13 +59,14 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         currentFilters = defaultCurrentFilters
         
         filtersAppliedLabel.text = getFiltersText(defaultCurrentFilters)
-//        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: metersPerMile, location: defaultCenterLocation) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
         }
     }
     
@@ -173,7 +173,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         if let location = filters["location"] {
             centerLocation = location as? [Double]
         } else {
-            centerLocation = [(currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!]
+            if currentLocation != nil {
+                centerLocation = [(currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!]
+            }
         }
         
         filtersAppliedLabel.text = getFiltersText(currentFilters!)
@@ -183,8 +185,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
         }
-        if businesses.count > 0 {
+        if businesses != nil && businesses.count > 0 {
             tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
     }
