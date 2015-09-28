@@ -7,16 +7,19 @@
 //
 
 import UIKit
+import MBProgressHUD
+import CoreLocation
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
-
     @IBOutlet weak var filtersBarButton: UIBarButtonItem!
     var businesses: [Business]!
     var currentFilters: [String: AnyObject]?
     var defaultCurrentFilters = [String: AnyObject]()
     let metersPerMile = 1609.34
     var searchBar: UISearchBar?
+    var locationManager : CLLocationManager!
     @IBOutlet weak var noResultsFoundView: UIView!
+    @IBOutlet weak var filtersAppliedLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -35,24 +38,56 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchBar = navigationSearchBar
         navigationSearchBar.delegate = self
         
+        locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
         
+        let defaultCenterLocation: [Double] = [37.785771, -122.406165]
         defaultCurrentFilters["categories"] = []
         defaultCurrentFilters["deals"] = false as Bool
         defaultCurrentFilters["distance"] = metersPerMile
         defaultCurrentFilters["sort"] = 1
+        defaultCurrentFilters["location"] = defaultCenterLocation
+        
+        filtersAppliedLabel.text = getFiltersText(defaultCurrentFilters)
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         
-        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: metersPerMile) { (businesses: [Business]!, error: NSError!) -> Void in
+        Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: metersPerMile, location: defaultCenterLocation) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)
         }
     }
     
-    func showError(businesses: [Business]) {
+    func getFiltersText(filters: [String: AnyObject]) -> String {
+        var filtersAppliedText = ""
+        
+        if let categories = filters["categories"] {
+            for category in categories as! NSArray {
+                filtersAppliedText += "\(category)"
+            }
+        }
+        if filters["deals"] as! Bool == true {
+            filtersAppliedText += "deals "
+        }
+
+        if let distance = filters["distance"] {
+            let distanceInMiles = distance as! Double/metersPerMile
+            filtersAppliedText += "\(distanceInMiles) miles "
+        }
+        
+        if let sort = filters["sort"] {
+            filtersAppliedText += "sort by: \(YelpSortMode(rawValue: sort as! Int)!.label)"
+        }
+        return filtersAppliedText
+    }
+    
+    func showError(businesses: [Business]?) {
         noResultsFoundView.hidden = true
-        if businesses.count == 0 {
-            noResultsFoundView.hidden = false
+        if businesses != nil {
+            if businesses!.count == 0 {
+                noResultsFoundView.hidden = false
+            }
         }
     }
     
@@ -118,8 +153,15 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         if let searchText = searchBar!.text {
             searchTerm = searchText
         }
+        var centerLocation: [Double]? = nil
+        if let location = filters["location"] {
+            centerLocation = location as! [Double]
+        }
         
-        Business.searchWithTerm(searchTerm, sort: sortOrder, categories: categories, deals: deals, radius: distance) { (businesses: [Business]!, error: NSError!) -> Void in
+        filtersAppliedLabel.text = getFiltersText(currentFilters)
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        Business.searchWithTerm(searchTerm, sort: sortOrder, categories: categories, deals: deals, radius: distance, location: centerLocation) { (businesses: [Business]!, error: NSError!) -> Void in
             self.businesses = businesses
             self.tableView.reloadData()
             self.showError(businesses)

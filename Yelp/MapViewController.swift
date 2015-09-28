@@ -13,12 +13,23 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     var businesses: [Business]!
-//    var searchCenter: [String: Double]?
+    var searchCenter: [Double]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        mapView.setRegion(MKCoordinateRegionMake(CLLocationCoordinate2DMake(37.783333, -122.416667), MKCoordinateSpanMake(0.1, 0.1)), animated: false)
+        
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.749, green: 0.0902, blue: 0, alpha: 1.0)
+        
+        var centerLat = 37.783333
+        var centerLong = -122.416667
+        if let searchCenter = searchCenter {
+            centerLat = searchCenter[0]
+            centerLong = searchCenter[1]
+        }
+        
+        mapView.setRegion(MKCoordinateRegionMake(CLLocationCoordinate2DMake(centerLat, centerLong), MKCoordinateSpanMake(0.1, 0.1)), animated: false)
         
         for business in businesses {
             if let address = business.address {
@@ -45,16 +56,5 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         annotation.coordinate = locationCoordinate
         mapView.addAnnotation(annotation)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

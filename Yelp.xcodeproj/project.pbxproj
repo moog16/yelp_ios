@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		03D1A025B413415787AD3DF3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C56EF0CE844A4EE5819C72AF /* libPods.a */; };
 		222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */; };
 		222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A5E19CCF9F900D2DB53 /* Main.storyboard */; };
 		222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A6119CCF9F900D2DB53 /* Images.xcassets */; };
@@ -16,11 +15,13 @@
 		222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A7C19CCFAE000D2DB53 /* YelpClient.swift */; };
 		22AAAA991AEA0A9700A544AF /* Business.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA981AEA0A9700A544AF /* Business.swift */; };
 		22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */; };
+		3530717BE84B4E6DF9356B34 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652FD506ACAFE7604FF701B /* libPods.a */; };
 		CB0463701BB0A60F00C8F193 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB04636F1BB0A60F00C8F193 /* BusinessCell.swift */; settings = {ASSET_TAGS = (); }; };
 		CB40E10E1BB20C8300FD3D0C /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB40E10D1BB20C8300FD3D0C /* SwitchCell.swift */; settings = {ASSET_TAGS = (); }; };
 		CB40E1141BB3555D00FD3D0C /* CheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB40E1131BB3555C00FD3D0C /* CheckboxCell.swift */; settings = {ASSET_TAGS = (); }; };
 		CB42E4BE1BB1FCF5002B8F4F /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		CB4F58461BB4CF720029E73A /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F58451BB4CF720029E73A /* DropDownCell.swift */; settings = {ASSET_TAGS = (); }; };
+		CBBE8D281BB8DB9700EA92CD /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE8D271BB8DB9700EA92CD /* CoreLocation.framework */; };
 		CBEA1C731BB5D84C00BDE0B3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBEA1C721BB5D84C00BDE0B3 /* MapKit.framework */; };
 		CBEA1C751BB5DA3900BDE0B3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEA1C741BB5DA3900BDE0B3 /* MapViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1652FD506ACAFE7604FF701B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5519CCF9F900D2DB53 /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5919CCF9F900D2DB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,12 +53,12 @@
 		22AAAA9B1AEA1EC300A544AF /* BusinessesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessesViewController.swift; sourceTree = "<group>"; };
 		97D8B2E3FFD1AF4F4A707E47 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		BBD540129B10DFE60E8C24E2 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		C56EF0CE844A4EE5819C72AF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB04636F1BB0A60F00C8F193 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
 		CB40E10D1BB20C8300FD3D0C /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		CB40E1131BB3555C00FD3D0C /* CheckboxCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckboxCell.swift; sourceTree = "<group>"; };
 		CB42E4BD1BB1FCF5002B8F4F /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		CB4F58451BB4CF720029E73A /* DropDownCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		CBBE8D271BB8DB9700EA92CD /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CBEA1C721BB5D84C00BDE0B3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		CBEA1C741BB5DA3900BDE0B3 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,8 +68,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBBE8D281BB8DB9700EA92CD /* CoreLocation.framework in Frameworks */,
 				CBEA1C731BB5D84C00BDE0B3 /* MapKit.framework in Frameworks */,
-				03D1A025B413415787AD3DF3 /* libPods.a in Frameworks */,
+				3530717BE84B4E6DF9356B34 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,8 +175,9 @@
 		4A7CA25ACD374CA0AC966A24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CBBE8D271BB8DB9700EA92CD /* CoreLocation.framework */,
 				CBEA1C721BB5D84C00BDE0B3 /* MapKit.framework */,
-				C56EF0CE844A4EE5819C72AF /* libPods.a */,
+				1652FD506ACAFE7604FF701B /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
