@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MBProgressHUD
+//import MBProgressHUD
 import CoreLocation
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
