@@ -18,6 +18,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     let metersPerMile = 1609.34
     var searchBar: UISearchBar?
     var locationManager : CLLocationManager!
+    var currentLocation: CLLocation?
     @IBOutlet weak var noResultsFoundView: UIView!
     @IBOutlet weak var filtersAppliedLabel: UILabel!
     
@@ -38,18 +39,28 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         searchBar = navigationSearchBar
         navigationSearchBar.delegate = self
         
+        var defaultCenterLocation: [Double] = [37.785771, -122.406165]
         locationManager = CLLocationManager()
         locationManager.requestWhenInUseAuthorization()
+        if( CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.AuthorizedAlways) {
+                currentLocation = locationManager.location
+                if currentLocation != nil {
+                    defaultCenterLocation[0] = (currentLocation?.coordinate.latitude)!
+                    defaultCenterLocation[1] = (currentLocation?.coordinate.longitude)!
+                    print(defaultCenterLocation)
+                }
+        }
         
-        let defaultCenterLocation: [Double] = [37.785771, -122.406165]
         defaultCurrentFilters["categories"] = []
         defaultCurrentFilters["deals"] = false as Bool
         defaultCurrentFilters["distance"] = metersPerMile
         defaultCurrentFilters["sort"] = 1
         defaultCurrentFilters["location"] = defaultCenterLocation
+        currentFilters = defaultCurrentFilters
         
         filtersAppliedLabel.text = getFiltersText(defaultCurrentFilters)
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+//        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         
         Business.searchWithTerm("Restaurants", sort: .Distance, categories: nil, deals: false, radius: metersPerMile, location: defaultCenterLocation) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -137,6 +148,11 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
             if businesses != nil {
                 let mapViewController = nextViewController as! MapViewController
                 mapViewController.businesses = self.businesses
+                if let currentFilters = currentFilters {
+                    if let centerLocation = currentFilters["location"] as! [Double]? {
+                        mapViewController.searchCenter = centerLocation
+                    }
+                }
             }
         }
     }
@@ -155,10 +171,12 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         var centerLocation: [Double]? = nil
         if let location = filters["location"] {
-            centerLocation = location as! [Double]
+            centerLocation = location as? [Double]
+        } else {
+            centerLocation = [(currentLocation?.coordinate.latitude)!, (currentLocation?.coordinate.longitude)!]
         }
         
-        filtersAppliedLabel.text = getFiltersText(currentFilters)
+        filtersAppliedLabel.text = getFiltersText(currentFilters!)
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         Business.searchWithTerm(searchTerm, sort: sortOrder, categories: categories, deals: deals, radius: distance, location: centerLocation) { (businesses: [Business]!, error: NSError!) -> Void in
